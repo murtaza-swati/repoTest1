@@ -1,4 +1,4 @@
 os: linux
 language: ruby
 arch: arm64
-compiler: arm-linux-gnueabi-g++-7
+compiler: gcc-6
