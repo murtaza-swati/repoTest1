@@ -1,6 +1,23 @@
-os: linux
-language: ruby
-after_success:
-- echo -e "!!!!!!after success executed!!!!!!"
-after_failure:
-- echo -e "!!!!!!!after failure executed!!!!!!!!"
+# os: linux
+# language: ruby
+# after_success:
+# - echo -e "!!!!!!after success executed!!!!!!"
+# after_failure:
+# - echo -e "!!!!!!!after failure executed!!!!!!!!"
+
+jobs:
+  include:
+    - stage: warm_cache
+      script:
+        - echo "foo" > foo.txt
+      workspaces:
+        create:
+          name: ws1
+          paths:
+            - foo.txt
+    - stage: use_cache
+      workspaces:
+        use: ws1
+      script:
+        - cat foo.txt || true
+        - cat foo.txt || true
