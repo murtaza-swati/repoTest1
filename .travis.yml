@@ -3,5 +3,5 @@ language: ruby
 after_success:
 - echo -e "!!!!!!after success executed!!!!!!"
 after_failure:
-- echo -e "!!!!!!!after failure executed!!!!!!!"
+- echo -e "!!!!!!!after failure executed!!!!!!"
 
