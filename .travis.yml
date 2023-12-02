@@ -1,7 +1,7 @@
 os: linux
 language: ruby
 after_success:
-- echo -e "!!!!!!after success executed!!!!!!"
+- echo -e "!!!!!!after success executed!!!!"
 after_failure:
 - echo -e "!!!!!!!after failure executed!!!!!!"
 
