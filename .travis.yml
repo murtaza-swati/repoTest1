@@ -1,40 +1,21 @@
-language: node_js
-node_js:
-  - '10'
-  - '12'
-  - '14'
+dist: focal
+language: ruby
 
 addons:
-  # Use a different PostgreSQL version than the default:
-  postgresql: 13
+  postgresql: '13'
   apt:
-    update: true
-    packages:
-      - postgresql-13
-      - postgresql-13-postgis-3
-
-services:
-  - postgresql
-
+      packages:
+        - postgresql-13
 env:
   global:
-    # A different port must be used when not using the
-    # default PostgreSQL:
-    - PGPORT=5433
-  jobs:
-    - NODE_ENV=test DB_PORT=5433 DB_USERNAME=postgres
-
+   - PGUSER=postgres
+   - PGPORT=5432
+   - PGHOST=localhost
 before_install:
-  # Use trust instead of peer authentication:
-  - >-
-    sudo sed -i
-    -e '/local.*peer/s/postgres/all/'
-    -e 's/peer\|md5/trust/g'
-    /etc/postgresql/13/main/pg_hba.conf
-  # Restart the PostgreSQL service:
-  - sudo service postgresql@13-main restart
+ - sudo sed -i -e '/local.*peer/s/postgres/all/' -e 's/peer\|md5/trust/g' /etc/postgresql/*/main/pg_hba.conf
+ - sudo service postgresql restart
+ - sleep 1
+ - postgres --version
 
-before_script:
-  # Create the test database:
-  - sudo psql -p 5433 -U postgres -c 'create database my-app;'
-  
+script:
+  - psql -c 'create database travis_ci_test;' -U postgres
