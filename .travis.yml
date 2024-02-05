@@ -1,7 +1,21 @@
-os: linux
+dist: focal
 language: ruby
-after_success:
-- echo -e "!!!!!!after success executed!!!!!!"
-after_failure:
-- echo -e "!!!!!!!after failure executed!!!!!!"
 
+addons:
+  postgresql: '13'
+  apt:
+      packages:
+        - postgresql-13
+env:
+  global:
+   - PGUSER=postgres
+   - PGPORT=5432
+   - PGHOST=localhost
+before_install:
+ - sudo sed -i -e '/local.*peer/s/postgres/all/' -e 's/peer\|md5/trust/g' /etc/postgresql/*/main/pg_hba.conf
+ - sudo service postgresql restart
+ - sleep 1
+ - postgres --version
+
+script:
+  - psql -c 'create database travis_ci_test;' -U postgres
