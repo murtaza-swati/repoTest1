@@ -37,3 +37,4 @@ before_install:
 before_script:
   # Create the test database:
   - sudo psql -p 5433 -U postgres -c 'create database my-app;'
+  
